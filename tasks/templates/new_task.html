@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        
+        <div class="notification is-dark">
+            <strong>
+                <h1 class="title">Nova Tarefa</h1>
+            </strong>
+        </div>
+
+        <div class="is-flex is-justify-content-end mb-4">
+            <a class="button is-primary" href="{% url 'list_view' %}">Voltar</a>
+        </div>
+
+        <form class="form" method="POST" action="{% url 'create_view' %}">
+            {% csrf_token %}
+            <div class="control mt-3">
+                <label class="label">Nome da Tarefa</label>
+                {{ form.name }}
+            </div>
+            <div class="control mt-3">
+                <label class="label">Descrição da Tarefa</label>
+                {{ form.description }}
+            </div>
+            <div class="control mt-3">
+                <label class="label">Data de Entrega</label>
+                {{ form.limite_date }}
+            </div>
+            <div class="control mt-3">
+                <label class="label">Prioridade</label>
+                {{ form.priority }}
+            </div>
+            <div class="control mt-3">
+                <button type="submit" class="button is-primary">Adicionar</button>
+                <a href="{% url 'list_view' %}" class="button is-danger">Cancelar</a>
+            </div>
+        </form>
+        
+    </div>
+      
+    {% endblock %}

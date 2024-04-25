@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+
+        <div class="notification is-dark">
+            <strong>
+                <h1 class="title">Minhas Tarefas</h1>
+            </strong>
+        </div>
+
+        <div class="is-flex is-justify-content-end mb-4">
+            <a href="{% url 'create_view' %}" class="button is-primary">Adicionar Tarefa</a>
+        </div>
+        <div class="is-flex is-justify-content-center">
+            
+            <table class="table" id="table">
+                <thead>
+                    <tr class="is-dark">
+                        <th>Status</th>
+                        <th>Tarefa</th>
+                        <th>Descrição</th>
+                        <th>Criada em</th>
+                        <th>Data de Entrega</th>
+                        <th>Prioridade</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if tasks %}
+                    {% for task in tasks %}
+                    <tr>
+                        <td id="status-{{ task.pk }}">
+                            {% if task.status %}
+                            <a hx-post="{% url 'conclude_view' pk=task.pk %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#status-{{ task.pk }}" hx-swap="outerHTML" hx-swap-oob="true" class="button is-primary is-small" hx-trigger="click">Concluir</a>
+                            {% else %}
+                            <a class="button is-white is-small">Concluído</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.created_at }}</td>
+                        <td>{{ task.limite_date }}</td>
+                        <td>
+                            {% if task.priority == 0 %}
+                            <span class="tag is-danger">Alta</span>
+                            {% elif task.priority == 1 %}
+                            <span class="tag is-warning">Média</span>
+                            {% else %}
+                            <span class="tag is-link">Baixa</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'update_view' task.pk %}" class="button is-dark is-small">Editar</a>
+                            <form method="POST" action="{% url 'delete_view' pk=task.pk %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="button is-dark is-small">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="7">Não há tarefas no momento</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>        </div>
+    </div>
+
+    {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+
+
+    <div class="notification is-dark">
+        <strong>
+            <h1 class="title">Atualizar Tarefa</h1>
+        </strong>
+    </div>
+
+    <div class="is-flex is-justify-content-end mb-4">
+        <button class="button is-primary">Voltar</button>
+    </div>
+
+    <form method="POST" action="{% url 'update_view' task.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="control mt-3">
+            <button type="submit" class="button is-primary">Adicionar</button>
+            <a href="{% url 'list_view' %}" class="button is-danger">Cancelar</a>
+        </div>
+    </form>        
+
+</div>
+
+{% endblock %}
